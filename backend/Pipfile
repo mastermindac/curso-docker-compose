@@ -13,6 +13,7 @@ marshmallow-sqlalchemy = "*"
 gunicorn = "*"
 flask-caching = "*"
 redis = "*"
+flask-cors = "*"
 
 [dev-packages]
 

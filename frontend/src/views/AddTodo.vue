@@ -5,11 +5,11 @@
 </template>
 
 <script setup>
+import api from "@/api";
 import Alert from "@/components/Alert.vue";
 import TodoForm from "@/components/TodoForm.vue";
 import { useAlert } from "@/composables/alert";
 import { humanReadableError } from "@/helpers/errors";
-import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -22,7 +22,7 @@ const router = useRouter();
 async function submit(todo) {
   isPostingTodo.value = true;
   try {
-    await axios.post("/api/todos", todo);
+    await api.todos.post(todo);
     router.push("/");
   } catch (e) {
     if (e.response.status == 422) {

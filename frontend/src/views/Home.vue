@@ -16,22 +16,26 @@
 </template>
 
 <script setup>
+import api from "@/api";
 import Alert from "@/components/Alert.vue";
 import Spinner from "@/components/Spinner.vue";
 import Todo from "@/components/Todo.vue";
 import { useAlert } from "@/composables/alert.js";
-import { useFetch } from "@/composables/fetch";
-import axios from "axios";
+import { useFetch } from "@/composables/fetch.js";
 
 const { alert, showAlert } = useAlert();
 
-const { data: todos, isLoading } = useFetch("/api/todos", {
+const { data: todos, isLoading } = useFetch(api.todos.url(), {
   onError: () => showAlert("Failed loading todos"),
 });
 
 async function removeTodo(id) {
-  await axios.delete(`/api/todos/${id}`);
-  todos.value = todos.value.filter((todo) => todo.id !== id);
+  try {
+    await api.todos.delete(id);
+    todos.value = todos.value.filter((todo) => todo.id !== id);
+  } catch (e) {
+    showAlert("Could not delete todo");
+  }
 }
 </script>
 
