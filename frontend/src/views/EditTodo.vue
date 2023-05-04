@@ -44,7 +44,7 @@ async function submit(todo) {
     if (e.response.status == 422) {
       showAlert(humanReadableError(e.response.data.errors));
     } else {
-      showAlert("Failed creating todo");
+      showAlert("Failed updating todo");
     }
   }
   isUpdatingTodo.value = false;

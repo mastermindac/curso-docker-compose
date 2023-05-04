@@ -20,7 +20,7 @@ export const todos = {
    * @param {number} id Todo ID 
    */
   url(id = null) {
-    return client.getUri({ url: this.route(id) })
+    return client.getUri({ url: this.route(id) });
   },
 
   /**
@@ -38,7 +38,7 @@ export const todos = {
    * @param {number} id 
    */
   post(data) {
-    return client.post(this.route(), data)
+    return client.post(this.route(), data);
   },
 
   /**
@@ -47,7 +47,7 @@ export const todos = {
    * @param {number} id 
    */
   put(id, data) {
-    return client.put(this.route(id), data)
+    return client.put(this.route(id), data);
   },
 
   /**
@@ -56,6 +56,6 @@ export const todos = {
    * @param {number} id 
    */
   delete(id) {
-    return client.delete(this.route(id))
+    return client.delete(this.route(id));
   }
 }
