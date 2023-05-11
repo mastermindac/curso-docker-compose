@@ -6,14 +6,22 @@
     </div>
 
     <div class="links">
-      <ul>
+      <ul v-if="store.user.isAuthenticated">
         <li><RouterLink to="/">Home</RouterLink></li>
         <li><RouterLink to="/todos/create">Add Todo</RouterLink></li>
-        <li><RouterLink to="/about">About</RouterLink></li>
+        <li><RouterLink to="/logout">Logout</RouterLink></li>
+      </ul>
+      <ul v-else>
+        <li><RouterLink to="/login">Login</RouterLink></li>
+        <li><RouterLink to="/register">Register</RouterLink></li>
       </ul>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { store } from "@/store";
+</script>
 
 <style scoped>
 .navbar {

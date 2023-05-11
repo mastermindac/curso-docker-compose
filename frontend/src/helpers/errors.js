@@ -31,7 +31,12 @@ function humanReadableError(errors) {
   return firstError;
 }
 
+function httpErrorMessage(e) {
+  return e.response?.data?.message ?? e.message ?? "Unknown Error";
+}
+
 export {
   humanReadableError,
   capitalizeFirstLetter,
+  httpErrorMessage,
 }

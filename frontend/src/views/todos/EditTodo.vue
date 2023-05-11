@@ -1,37 +1,37 @@
 <template>
   <Spinner class="spinner" v-if="isLoading" />
 
-  <Alert v-bind="alert" @close="alert.show = false" />
+  <div class="form-container">
+    <Alert v-bind="alert" @close="alert.show = false" />
 
-  <TodoForm
-    v-if="todo !== null"
-    :data="todo"
-    :isLoading="isUpdatingTodo"
-    title="Edit Todo"
-    @submit="submit"
-  />
+    <TodoForm
+      v-if="todo !== null"
+      title="Edit Todo"
+      @submit="submit"
+      :prepopulate="todo"
+      :isLoading="isUpdatingTodo"
+    />
+  </div>
 </template>
 
 <script setup>
 import api from "@/api";
 import Alert from "@/components/Alert.vue";
+import TodoForm from "@/components/forms/TodoForm.vue";
 import Spinner from "@/components/Spinner.vue";
-import TodoForm from "@/components/TodoForm.vue";
 import { useAlert } from "@/composables/alert";
 import { useFetch } from "@/composables/fetch.js";
-import { humanReadableError } from "@/helpers/errors.js";
+import { httpErrorMessage, humanReadableError } from "@/helpers/errors.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps(["id"]);
-
 const { alert, showAlert } = useAlert();
-
 const isUpdatingTodo = ref(false);
 
 const router = useRouter();
 
-const { data: todo, isLoading } = useFetch(api.todos.url(props.id), {
+const { data: todo, isLoading } = useFetch(api.todos.route(props.id), {
   onError: () => showAlert("Failed loading todo"),
 });
 
@@ -41,10 +41,10 @@ async function submit(todo) {
     await api.todos.put(props.id, todo);
     router.push("/");
   } catch (e) {
-    if (e.response.status == 422) {
+    if (e.response?.status == 422) {
       showAlert(humanReadableError(e.response.data.errors));
     } else {
-      showAlert("Failed updating todo");
+      showAlert(`Failed updating todo: ${httpErrorMessage(e)}`);
     }
   }
   isUpdatingTodo.value = false;

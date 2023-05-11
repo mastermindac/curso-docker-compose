@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/api";
 import { ref, watch } from "vue";
 
 function useFetch(url, options = { onError: null }) {
@@ -11,7 +11,7 @@ function useFetch(url, options = { onError: null }) {
     stopErrorWatcher = watch(error, (e) => options.onError(e));
   }
 
-  axios
+  api.client
     .get(url)
     .then((res) => (data.value = res.data))
     .catch((e) => (error.value = e))

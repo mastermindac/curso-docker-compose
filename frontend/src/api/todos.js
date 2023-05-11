@@ -11,7 +11,7 @@ export const todos = {
    * @param {number} id Todo ID 
    */
   route(id = null) {
-    return id ? `/todos/${id}` : "/todos";
+    return id ? `/todos/${id}` : "/todos/";
   },
 
   /**

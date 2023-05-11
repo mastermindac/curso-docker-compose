@@ -1,24 +1,16 @@
 <template>
-  <div class="form">
+  <div class="form-background">
     <h1>{{ title }}</h1>
-    <form class="edit-todo-form">
-      <div class="form-field">
-        <label>Todo Title</label>
-      </div>
-      <input type="text" v-model="todo.title" />
-
-      <div class="form-field">
-        <label>Todo Description</label>
-      </div>
-      <input type="text" v-model="todo.description" />
-
-      <div class="form-field">
-        <label>Todo Date</label>
-      </div>
-      <input type="date" v-model="todo.date" />
+    <form class="form">
+      <template v-for="field in fields">
+        <div class="form-field">
+          <label>{{ field.label }}</label>
+        </div>
+        <input :type="field.type" v-model="data[field.name]" />
+      </template>
 
       <div class="submit">
-        <Btn :disabled="isLoading" @click.prevent="$emit('submit', todo)">
+        <Btn :disabled="isLoading" @click.prevent="$emit('submit', data)">
           <Spinner v-if="isLoading" />
           <span v-else>Submit</span>
         </Btn>
@@ -34,28 +26,31 @@ import { reactive } from "vue";
 
 const props = defineProps({
   title: {
-    default: "Todo Form",
+    default: "Generic Form",
   },
-  data: {
+  fields: {
+    type: Array,
+    default: () => [
+      { label: "Title", type: "text", name: "title" },
+      { label: "Description", type: "text", name: "description" },
+    ],
+  },
+  prepopulate: {
     type: Object,
-    default: () => ({
-      title: "",
-      description: "",
-      date: null,
-    }),
+    default: () => ({}),
   },
   isLoading: {
     default: false,
   },
 });
 
-const todo = reactive({ ...props.data });
+const data = reactive({ ...props.prepopulate });
 
 defineEmits(["submit"]);
 </script>
 
 <style scoped>
-.form {
+.form-background {
   background-color: var(--navbar-color);
   padding: 20px;
   border-radius: 10px;
@@ -65,7 +60,7 @@ defineEmits(["submit"]);
   margin-top: 20px;
 }
 
-.edit-todo-form>input {
+.form > input {
   width: 100%;
   height: 30px;
   border: 1px solid var(--accent-color);

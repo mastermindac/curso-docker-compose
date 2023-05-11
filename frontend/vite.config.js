@@ -13,13 +13,19 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    // server: {
-    //   proxy: {
-    //     "/api": {
-    //       target: env.VITE_API_URL,
-    //       rewrite: (path) => path.replace(/^\/api/, ""),
-    //     },
-    //   },
-    // },
+    server: {
+      proxy: {
+        [env.VITE_API_PROXY_PATH]: {
+          target: env.VITE_API_URL,
+          rewrite: (path) => {
+            const pattern = new RegExp(`^\\${env.VITE_API_PROXY_PATH}`);
+            return path.replace(pattern, "");
+          },
+        },
+        [env.VITE_API_REFRESH_TOKEN_PATH]: {
+          target: env.VITE_API_URL,
+        }
+      },
+    },
   };
 });

@@ -23,3 +23,8 @@ html {
   width: 80%;
   margin: auto;
 }
+
+.form-container {
+  max-width: 600px;
+  margin: auto;
+}
